@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GirisRouteImport } from './routes/giris'
+import { Route as KayitRouteImport } from './routes/kayit'
 import { Route as MotosikletlerIndexRouteImport } from './routes/motosikletler/index'
 import { Route as MotosikletlerSlugRouteImport } from './routes/motosikletler/$slug'
 import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler/ilan-ver'
@@ -17,6 +19,16 @@ import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GirisRoute = GirisRouteImport.update({
+  id: '/giris',
+  path: '/giris',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KayitRoute = KayitRouteImport.update({
+  id: '/kayit',
+  path: '/kayit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotosikletlerIndexRoute = MotosikletlerIndexRouteImport.update({
@@ -37,12 +49,16 @@ const MotosikletlerIlanVerRoute = MotosikletlerIlanVerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/motosikletler': typeof MotosikletlerIndexRoute
@@ -50,6 +66,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
@@ -57,13 +75,25 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/motosikletler/$slug' | '/motosikletler/ilan-ver' | '/motosikletler/'
+    | '/'
+    | '/giris'
+    | '/kayit'
+    | '/motosikletler/$slug'
+    | '/motosikletler/ilan-ver'
+    | '/motosikletler/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/motosikletler/$slug' | '/motosikletler/ilan-ver' | '/motosikletler'
+    | '/'
+    | '/giris'
+    | '/kayit'
+    | '/motosikletler/$slug'
+    | '/motosikletler/ilan-ver'
+    | '/motosikletler'
   id:
     | '__root__'
     | '/'
+    | '/giris'
+    | '/kayit'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/motosikletler/'
@@ -71,6 +101,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GirisRoute: typeof GirisRoute
+  KayitRoute: typeof KayitRoute
   MotosikletlerSlugRoute: typeof MotosikletlerSlugRoute
   MotosikletlerIlanVerRoute: typeof MotosikletlerIlanVerRoute
   MotosikletlerIndexRoute: typeof MotosikletlerIndexRoute
@@ -83,6 +115,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/giris': {
+      id: '/giris'
+      path: '/giris'
+      fullPath: '/giris'
+      preLoaderRoute: typeof GirisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kayit': {
+      id: '/kayit'
+      path: '/kayit'
+      fullPath: '/kayit'
+      preLoaderRoute: typeof KayitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/motosikletler/': {
@@ -111,6 +157,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GirisRoute: GirisRoute,
+  KayitRoute: KayitRoute,
   MotosikletlerSlugRoute: MotosikletlerSlugRoute,
   MotosikletlerIlanVerRoute: MotosikletlerIlanVerRoute,
   MotosikletlerIndexRoute: MotosikletlerIndexRoute,
