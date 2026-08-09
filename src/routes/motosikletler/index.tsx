@@ -64,7 +64,7 @@ function MotorcycleListPage() {
   const navigate = useNavigate({ from: "/motosikletler" });
 
   const setFilter = (patch: Partial<MotoSearch>) => {
-    void navigate({ search: (prev) => ({ ...prev, ...patch }) });
+    void navigate({ search: (prev: MotoSearch) => ({ ...prev, ...patch }) });
   };
 
   const { data, isLoading } = useQuery({
