@@ -12,11 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GirisRouteImport } from './routes/giris'
 import { Route as KayitRouteImport } from './routes/kayit'
+import { Route as KuryeIlanlariIndexRouteImport } from './routes/kurye-ilanlari/index'
 import { Route as MotosikletlerIndexRouteImport } from './routes/motosikletler/index'
 import { Route as MotosikletlerSlugRouteImport } from './routes/motosikletler/$slug'
 import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler/ilan-ver'
 import { Route as ParcaAksesuarIndexRouteImport } from './routes/parca-aksesuar/index'
 import { Route as ParcaAksesuarSlugRouteImport } from './routes/parca-aksesuar/$slug'
+import { Route as ParcaAksesuarIlanVerRouteImport } from './routes/parca-aksesuar/ilan-ver'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,6 +33,11 @@ const GirisRoute = GirisRouteImport.update({
 const KayitRoute = KayitRouteImport.update({
   id: '/kayit',
   path: '/kayit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariIndexRoute = KuryeIlanlariIndexRouteImport.update({
+  id: '/kurye-ilanlari/',
+  path: '/kurye-ilanlari/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotosikletlerIndexRoute = MotosikletlerIndexRouteImport.update({
@@ -58,6 +65,11 @@ const ParcaAksesuarSlugRoute = ParcaAksesuarSlugRouteImport.update({
   path: '/parca-aksesuar/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParcaAksesuarIlanVerRoute = ParcaAksesuarIlanVerRouteImport.update({
+  id: '/parca-aksesuar/ilan-ver',
+  path: '/parca-aksesuar/ilan-ver',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +78,8 @@ export interface FileRoutesByFullPath {
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/kurye-ilanlari/': typeof KuryeIlanlariIndexRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
   '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
 }
@@ -76,6 +90,8 @@ export interface FileRoutesByTo {
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/kurye-ilanlari': typeof KuryeIlanlariIndexRoute
   '/motosikletler': typeof MotosikletlerIndexRoute
   '/parca-aksesuar': typeof ParcaAksesuarIndexRoute
 }
@@ -87,6 +103,8 @@ export interface FileRoutesById {
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/kurye-ilanlari/': typeof KuryeIlanlariIndexRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
   '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
 }
@@ -99,6 +117,8 @@ export interface FileRouteTypes {
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/kurye-ilanlari/'
     | '/motosikletler/'
     | '/parca-aksesuar/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +129,8 @@ export interface FileRouteTypes {
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/kurye-ilanlari'
     | '/motosikletler'
     | '/parca-aksesuar'
   id:
@@ -119,6 +141,8 @@ export interface FileRouteTypes {
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/kurye-ilanlari/'
     | '/motosikletler/'
     | '/parca-aksesuar/'
   fileRoutesById: FileRoutesById
@@ -130,6 +154,8 @@ export interface RootRouteChildren {
   MotosikletlerSlugRoute: typeof MotosikletlerSlugRoute
   MotosikletlerIlanVerRoute: typeof MotosikletlerIlanVerRoute
   ParcaAksesuarSlugRoute: typeof ParcaAksesuarSlugRoute
+  ParcaAksesuarIlanVerRoute: typeof ParcaAksesuarIlanVerRoute
+  KuryeIlanlariIndexRoute: typeof KuryeIlanlariIndexRoute
   MotosikletlerIndexRoute: typeof MotosikletlerIndexRoute
   ParcaAksesuarIndexRoute: typeof ParcaAksesuarIndexRoute
 }
@@ -155,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/kayit'
       fullPath: '/kayit'
       preLoaderRoute: typeof KayitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/': {
+      id: '/kurye-ilanlari/'
+      path: '/kurye-ilanlari'
+      fullPath: '/kurye-ilanlari/'
+      preLoaderRoute: typeof KuryeIlanlariIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/motosikletler/': {
@@ -192,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParcaAksesuarSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parca-aksesuar/ilan-ver': {
+      id: '/parca-aksesuar/ilan-ver'
+      path: '/parca-aksesuar/ilan-ver'
+      fullPath: '/parca-aksesuar/ilan-ver'
+      preLoaderRoute: typeof ParcaAksesuarIlanVerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -202,6 +242,8 @@ const rootRouteChildren: RootRouteChildren = {
   MotosikletlerSlugRoute: MotosikletlerSlugRoute,
   MotosikletlerIlanVerRoute: MotosikletlerIlanVerRoute,
   ParcaAksesuarSlugRoute: ParcaAksesuarSlugRoute,
+  ParcaAksesuarIlanVerRoute: ParcaAksesuarIlanVerRoute,
+  KuryeIlanlariIndexRoute: KuryeIlanlariIndexRoute,
   MotosikletlerIndexRoute: MotosikletlerIndexRoute,
   ParcaAksesuarIndexRoute: ParcaAksesuarIndexRoute,
 }
