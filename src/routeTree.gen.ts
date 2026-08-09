@@ -15,6 +15,8 @@ import { Route as KayitRouteImport } from './routes/kayit'
 import { Route as MotosikletlerIndexRouteImport } from './routes/motosikletler/index'
 import { Route as MotosikletlerSlugRouteImport } from './routes/motosikletler/$slug'
 import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler/ilan-ver'
+import { Route as ParcaAksesuarIndexRouteImport } from './routes/parca-aksesuar/index'
+import { Route as ParcaAksesuarSlugRouteImport } from './routes/parca-aksesuar/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +48,16 @@ const MotosikletlerIlanVerRoute = MotosikletlerIlanVerRouteImport.update({
   path: '/motosikletler/ilan-ver',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParcaAksesuarIndexRoute = ParcaAksesuarIndexRouteImport.update({
+  id: '/parca-aksesuar/',
+  path: '/parca-aksesuar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParcaAksesuarSlugRoute = ParcaAksesuarSlugRouteImport.update({
+  id: '/parca-aksesuar/$slug',
+  path: '/parca-aksesuar/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,7 +65,9 @@ export interface FileRoutesByFullPath {
   '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +75,9 @@ export interface FileRoutesByTo {
   '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
   '/motosikletler': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar': typeof ParcaAksesuarIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,7 +86,9 @@ export interface FileRoutesById {
   '/kayit': typeof KayitRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
   '/motosikletler/': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -80,7 +98,9 @@ export interface FileRouteTypes {
     | '/kayit'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
     | '/motosikletler/'
+    | '/parca-aksesuar/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -88,7 +108,9 @@ export interface FileRouteTypes {
     | '/kayit'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
     | '/motosikletler'
+    | '/parca-aksesuar'
   id:
     | '__root__'
     | '/'
@@ -96,7 +118,9 @@ export interface FileRouteTypes {
     | '/kayit'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
     | '/motosikletler/'
+    | '/parca-aksesuar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,7 +129,9 @@ export interface RootRouteChildren {
   KayitRoute: typeof KayitRoute
   MotosikletlerSlugRoute: typeof MotosikletlerSlugRoute
   MotosikletlerIlanVerRoute: typeof MotosikletlerIlanVerRoute
+  ParcaAksesuarSlugRoute: typeof ParcaAksesuarSlugRoute
   MotosikletlerIndexRoute: typeof MotosikletlerIndexRoute
+  ParcaAksesuarIndexRoute: typeof ParcaAksesuarIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MotosikletlerIlanVerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parca-aksesuar/': {
+      id: '/parca-aksesuar/'
+      path: '/parca-aksesuar'
+      fullPath: '/parca-aksesuar/'
+      preLoaderRoute: typeof ParcaAksesuarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parca-aksesuar/$slug': {
+      id: '/parca-aksesuar/$slug'
+      path: '/parca-aksesuar/$slug'
+      fullPath: '/parca-aksesuar/$slug'
+      preLoaderRoute: typeof ParcaAksesuarSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -161,18 +201,10 @@ const rootRouteChildren: RootRouteChildren = {
   KayitRoute: KayitRoute,
   MotosikletlerSlugRoute: MotosikletlerSlugRoute,
   MotosikletlerIlanVerRoute: MotosikletlerIlanVerRoute,
+  ParcaAksesuarSlugRoute: ParcaAksesuarSlugRoute,
   MotosikletlerIndexRoute: MotosikletlerIndexRoute,
+  ParcaAksesuarIndexRoute: ParcaAksesuarIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
