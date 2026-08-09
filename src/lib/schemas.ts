@@ -42,7 +42,7 @@ export const motorcycleListingSchema = z.object({
   description: z.string().trim().max(4000).optional().or(z.literal("")),
   city: z.string().trim().min(1, "İl seçin"),
   district: z.string().trim().max(60).optional().or(z.literal("")),
-  photos: z.array(z.string().url()).min(1, "En az 1 fotoğraf ekleyin").max(15, "En fazla 15 fotoğraf"),
+  photos: z.array(z.string().min(1)).min(1, "En az 1 fotoğraf ekleyin").max(15, "En fazla 15 fotoğraf"),
 });
 
 export const partListingSchema = z.object({
@@ -56,7 +56,7 @@ export const partListingSchema = z.object({
   description: z.string().trim().max(4000).optional().or(z.literal("")),
   city: z.string().trim().min(1, "İl seçin"),
   district: z.string().trim().max(60).optional().or(z.literal("")),
-  photos: z.array(z.string().url()).min(1, "En az 1 fotoğraf ekleyin").max(15),
+  photos: z.array(z.string().min(1)).min(1, "En az 1 fotoğraf ekleyin").max(15),
 });
 
 export const courierJobSchema = z.object({
