@@ -10,33 +10,219 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GirisRouteImport } from './routes/giris'
+import { Route as KayitRouteImport } from './routes/kayit'
+import { Route as HesabimIndexRouteImport } from './routes/hesabim/index'
+import { Route as HesabimMesajlarRouteImport } from './routes/hesabim/mesajlar'
+import { Route as KuryeIlanlariIndexRouteImport } from './routes/kurye-ilanlari/index'
+import { Route as KuryeIlanlariSlugRouteImport } from './routes/kurye-ilanlari/$slug'
+import { Route as KuryeIlanlariIlanVerRouteImport } from './routes/kurye-ilanlari/ilan-ver'
+import { Route as MotosikletlerIndexRouteImport } from './routes/motosikletler/index'
+import { Route as MotosikletlerSlugRouteImport } from './routes/motosikletler/$slug'
+import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler/ilan-ver'
+import { Route as ParcaAksesuarIndexRouteImport } from './routes/parca-aksesuar/index'
+import { Route as ParcaAksesuarSlugRouteImport } from './routes/parca-aksesuar/$slug'
+import { Route as ParcaAksesuarIlanVerRouteImport } from './routes/parca-aksesuar/ilan-ver'
+import { Route as ServislerIndexRouteImport } from './routes/servisler/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GirisRoute = GirisRouteImport.update({
+  id: '/giris',
+  path: '/giris',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KayitRoute = KayitRouteImport.update({
+  id: '/kayit',
+  path: '/kayit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HesabimIndexRoute = HesabimIndexRouteImport.update({
+  id: '/hesabim/',
+  path: '/hesabim/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HesabimMesajlarRoute = HesabimMesajlarRouteImport.update({
+  id: '/hesabim/mesajlar',
+  path: '/hesabim/mesajlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariIndexRoute = KuryeIlanlariIndexRouteImport.update({
+  id: '/kurye-ilanlari/',
+  path: '/kurye-ilanlari/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariSlugRoute = KuryeIlanlariSlugRouteImport.update({
+  id: '/kurye-ilanlari/$slug',
+  path: '/kurye-ilanlari/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariIlanVerRoute = KuryeIlanlariIlanVerRouteImport.update({
+  id: '/kurye-ilanlari/ilan-ver',
+  path: '/kurye-ilanlari/ilan-ver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotosikletlerIndexRoute = MotosikletlerIndexRouteImport.update({
+  id: '/motosikletler/',
+  path: '/motosikletler/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotosikletlerSlugRoute = MotosikletlerSlugRouteImport.update({
+  id: '/motosikletler/$slug',
+  path: '/motosikletler/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotosikletlerIlanVerRoute = MotosikletlerIlanVerRouteImport.update({
+  id: '/motosikletler/ilan-ver',
+  path: '/motosikletler/ilan-ver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParcaAksesuarIndexRoute = ParcaAksesuarIndexRouteImport.update({
+  id: '/parca-aksesuar/',
+  path: '/parca-aksesuar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParcaAksesuarSlugRoute = ParcaAksesuarSlugRouteImport.update({
+  id: '/parca-aksesuar/$slug',
+  path: '/parca-aksesuar/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParcaAksesuarIlanVerRoute = ParcaAksesuarIlanVerRouteImport.update({
+  id: '/parca-aksesuar/ilan-ver',
+  path: '/parca-aksesuar/ilan-ver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServislerIndexRoute = ServislerIndexRouteImport.update({
+  id: '/servisler/',
+  path: '/servisler/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
+  '/hesabim/mesajlar': typeof HesabimMesajlarRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
+  '/motosikletler/$slug': typeof MotosikletlerSlugRoute
+  '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/hesabim/': typeof HesabimIndexRoute
+  '/kurye-ilanlari/': typeof KuryeIlanlariIndexRoute
+  '/motosikletler/': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
+  '/servisler/': typeof ServislerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
+  '/hesabim/mesajlar': typeof HesabimMesajlarRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
+  '/motosikletler/$slug': typeof MotosikletlerSlugRoute
+  '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/hesabim': typeof HesabimIndexRoute
+  '/kurye-ilanlari': typeof KuryeIlanlariIndexRoute
+  '/motosikletler': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar': typeof ParcaAksesuarIndexRoute
+  '/servisler': typeof ServislerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/giris': typeof GirisRoute
+  '/kayit': typeof KayitRoute
+  '/hesabim/mesajlar': typeof HesabimMesajlarRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
+  '/motosikletler/$slug': typeof MotosikletlerSlugRoute
+  '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
+  '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
+  '/parca-aksesuar/ilan-ver': typeof ParcaAksesuarIlanVerRoute
+  '/hesabim/': typeof HesabimIndexRoute
+  '/kurye-ilanlari/': typeof KuryeIlanlariIndexRoute
+  '/motosikletler/': typeof MotosikletlerIndexRoute
+  '/parca-aksesuar/': typeof ParcaAksesuarIndexRoute
+  '/servisler/': typeof ServislerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/giris'
+    | '/kayit'
+    | '/hesabim/mesajlar'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
+    | '/motosikletler/$slug'
+    | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/hesabim/'
+    | '/kurye-ilanlari/'
+    | '/motosikletler/'
+    | '/parca-aksesuar/'
+    | '/servisler/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/giris'
+    | '/kayit'
+    | '/hesabim/mesajlar'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
+    | '/motosikletler/$slug'
+    | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/hesabim'
+    | '/kurye-ilanlari'
+    | '/motosikletler'
+    | '/parca-aksesuar'
+    | '/servisler'
+  id:
+    | '__root__'
+    | '/'
+    | '/giris'
+    | '/kayit'
+    | '/hesabim/mesajlar'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
+    | '/motosikletler/$slug'
+    | '/motosikletler/ilan-ver'
+    | '/parca-aksesuar/$slug'
+    | '/parca-aksesuar/ilan-ver'
+    | '/hesabim/'
+    | '/kurye-ilanlari/'
+    | '/motosikletler/'
+    | '/parca-aksesuar/'
+    | '/servisler/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GirisRoute: typeof GirisRoute
+  KayitRoute: typeof KayitRoute
+  HesabimMesajlarRoute: typeof HesabimMesajlarRoute
+  KuryeIlanlariSlugRoute: typeof KuryeIlanlariSlugRoute
+  KuryeIlanlariIlanVerRoute: typeof KuryeIlanlariIlanVerRoute
+  MotosikletlerSlugRoute: typeof MotosikletlerSlugRoute
+  MotosikletlerIlanVerRoute: typeof MotosikletlerIlanVerRoute
+  ParcaAksesuarSlugRoute: typeof ParcaAksesuarSlugRoute
+  ParcaAksesuarIlanVerRoute: typeof ParcaAksesuarIlanVerRoute
+  HesabimIndexRoute: typeof HesabimIndexRoute
+  KuryeIlanlariIndexRoute: typeof KuryeIlanlariIndexRoute
+  MotosikletlerIndexRoute: typeof MotosikletlerIndexRoute
+  ParcaAksesuarIndexRoute: typeof ParcaAksesuarIndexRoute
+  ServislerIndexRoute: typeof ServislerIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +234,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/giris': {
+      id: '/giris'
+      path: '/giris'
+      fullPath: '/giris'
+      preLoaderRoute: typeof GirisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kayit': {
+      id: '/kayit'
+      path: '/kayit'
+      fullPath: '/kayit'
+      preLoaderRoute: typeof KayitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hesabim/': {
+      id: '/hesabim/'
+      path: '/hesabim'
+      fullPath: '/hesabim/'
+      preLoaderRoute: typeof HesabimIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hesabim/mesajlar': {
+      id: '/hesabim/mesajlar'
+      path: '/hesabim/mesajlar'
+      fullPath: '/hesabim/mesajlar'
+      preLoaderRoute: typeof HesabimMesajlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/': {
+      id: '/kurye-ilanlari/'
+      path: '/kurye-ilanlari'
+      fullPath: '/kurye-ilanlari/'
+      preLoaderRoute: typeof KuryeIlanlariIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/$slug': {
+      id: '/kurye-ilanlari/$slug'
+      path: '/kurye-ilanlari/$slug'
+      fullPath: '/kurye-ilanlari/$slug'
+      preLoaderRoute: typeof KuryeIlanlariSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/ilan-ver': {
+      id: '/kurye-ilanlari/ilan-ver'
+      path: '/kurye-ilanlari/ilan-ver'
+      fullPath: '/kurye-ilanlari/ilan-ver'
+      preLoaderRoute: typeof KuryeIlanlariIlanVerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motosikletler/': {
+      id: '/motosikletler/'
+      path: '/motosikletler'
+      fullPath: '/motosikletler/'
+      preLoaderRoute: typeof MotosikletlerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motosikletler/$slug': {
+      id: '/motosikletler/$slug'
+      path: '/motosikletler/$slug'
+      fullPath: '/motosikletler/$slug'
+      preLoaderRoute: typeof MotosikletlerSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motosikletler/ilan-ver': {
+      id: '/motosikletler/ilan-ver'
+      path: '/motosikletler/ilan-ver'
+      fullPath: '/motosikletler/ilan-ver'
+      preLoaderRoute: typeof MotosikletlerIlanVerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parca-aksesuar/': {
+      id: '/parca-aksesuar/'
+      path: '/parca-aksesuar'
+      fullPath: '/parca-aksesuar/'
+      preLoaderRoute: typeof ParcaAksesuarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parca-aksesuar/$slug': {
+      id: '/parca-aksesuar/$slug'
+      path: '/parca-aksesuar/$slug'
+      fullPath: '/parca-aksesuar/$slug'
+      preLoaderRoute: typeof ParcaAksesuarSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parca-aksesuar/ilan-ver': {
+      id: '/parca-aksesuar/ilan-ver'
+      path: '/parca-aksesuar/ilan-ver'
+      fullPath: '/parca-aksesuar/ilan-ver'
+      preLoaderRoute: typeof ParcaAksesuarIlanVerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servisler/': {
+      id: '/servisler/'
+      path: '/servisler'
+      fullPath: '/servisler/'
+      preLoaderRoute: typeof ServislerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GirisRoute: GirisRoute,
+  KayitRoute: KayitRoute,
+  HesabimMesajlarRoute: HesabimMesajlarRoute,
+  KuryeIlanlariSlugRoute: KuryeIlanlariSlugRoute,
+  KuryeIlanlariIlanVerRoute: KuryeIlanlariIlanVerRoute,
+  MotosikletlerSlugRoute: MotosikletlerSlugRoute,
+  MotosikletlerIlanVerRoute: MotosikletlerIlanVerRoute,
+  ParcaAksesuarSlugRoute: ParcaAksesuarSlugRoute,
+  ParcaAksesuarIlanVerRoute: ParcaAksesuarIlanVerRoute,
+  HesabimIndexRoute: HesabimIndexRoute,
+  KuryeIlanlariIndexRoute: KuryeIlanlariIndexRoute,
+  MotosikletlerIndexRoute: MotosikletlerIndexRoute,
+  ParcaAksesuarIndexRoute: ParcaAksesuarIndexRoute,
+  ServislerIndexRoute: ServislerIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
