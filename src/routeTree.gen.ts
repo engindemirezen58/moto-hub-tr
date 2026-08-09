@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GirisRouteImport } from './routes/giris'
 import { Route as KayitRouteImport } from './routes/kayit'
 import { Route as KuryeIlanlariIndexRouteImport } from './routes/kurye-ilanlari/index'
+import { Route as KuryeIlanlariSlugRouteImport } from './routes/kurye-ilanlari/$slug'
+import { Route as KuryeIlanlariIlanVerRouteImport } from './routes/kurye-ilanlari/ilan-ver'
 import { Route as MotosikletlerIndexRouteImport } from './routes/motosikletler/index'
 import { Route as MotosikletlerSlugRouteImport } from './routes/motosikletler/$slug'
 import { Route as MotosikletlerIlanVerRouteImport } from './routes/motosikletler/ilan-ver'
@@ -38,6 +40,16 @@ const KayitRoute = KayitRouteImport.update({
 const KuryeIlanlariIndexRoute = KuryeIlanlariIndexRouteImport.update({
   id: '/kurye-ilanlari/',
   path: '/kurye-ilanlari/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariSlugRoute = KuryeIlanlariSlugRouteImport.update({
+  id: '/kurye-ilanlari/$slug',
+  path: '/kurye-ilanlari/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuryeIlanlariIlanVerRoute = KuryeIlanlariIlanVerRouteImport.update({
+  id: '/kurye-ilanlari/ilan-ver',
+  path: '/kurye-ilanlari/ilan-ver',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotosikletlerIndexRoute = MotosikletlerIndexRouteImport.update({
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/giris': typeof GirisRoute
   '/kayit': typeof KayitRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
@@ -87,6 +101,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/giris': typeof GirisRoute
   '/kayit': typeof KayitRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
@@ -100,6 +116,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/giris': typeof GirisRoute
   '/kayit': typeof KayitRoute
+  '/kurye-ilanlari/$slug': typeof KuryeIlanlariSlugRoute
+  '/kurye-ilanlari/ilan-ver': typeof KuryeIlanlariIlanVerRoute
   '/motosikletler/$slug': typeof MotosikletlerSlugRoute
   '/motosikletler/ilan-ver': typeof MotosikletlerIlanVerRoute
   '/parca-aksesuar/$slug': typeof ParcaAksesuarSlugRoute
@@ -114,6 +132,8 @@ export interface FileRouteTypes {
     | '/'
     | '/giris'
     | '/kayit'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
@@ -126,6 +146,8 @@ export interface FileRouteTypes {
     | '/'
     | '/giris'
     | '/kayit'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
@@ -138,6 +160,8 @@ export interface FileRouteTypes {
     | '/'
     | '/giris'
     | '/kayit'
+    | '/kurye-ilanlari/$slug'
+    | '/kurye-ilanlari/ilan-ver'
     | '/motosikletler/$slug'
     | '/motosikletler/ilan-ver'
     | '/parca-aksesuar/$slug'
@@ -151,6 +175,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GirisRoute: typeof GirisRoute
   KayitRoute: typeof KayitRoute
+  KuryeIlanlariSlugRoute: typeof KuryeIlanlariSlugRoute
+  KuryeIlanlariIlanVerRoute: typeof KuryeIlanlariIlanVerRoute
   MotosikletlerSlugRoute: typeof MotosikletlerSlugRoute
   MotosikletlerIlanVerRoute: typeof MotosikletlerIlanVerRoute
   ParcaAksesuarSlugRoute: typeof ParcaAksesuarSlugRoute
@@ -188,6 +214,20 @@ declare module '@tanstack/react-router' {
       path: '/kurye-ilanlari'
       fullPath: '/kurye-ilanlari/'
       preLoaderRoute: typeof KuryeIlanlariIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/$slug': {
+      id: '/kurye-ilanlari/$slug'
+      path: '/kurye-ilanlari/$slug'
+      fullPath: '/kurye-ilanlari/$slug'
+      preLoaderRoute: typeof KuryeIlanlariSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurye-ilanlari/ilan-ver': {
+      id: '/kurye-ilanlari/ilan-ver'
+      path: '/kurye-ilanlari/ilan-ver'
+      fullPath: '/kurye-ilanlari/ilan-ver'
+      preLoaderRoute: typeof KuryeIlanlariIlanVerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/motosikletler/': {
@@ -239,6 +279,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GirisRoute: GirisRoute,
   KayitRoute: KayitRoute,
+  KuryeIlanlariSlugRoute: KuryeIlanlariSlugRoute,
+  KuryeIlanlariIlanVerRoute: KuryeIlanlariIlanVerRoute,
   MotosikletlerSlugRoute: MotosikletlerSlugRoute,
   MotosikletlerIlanVerRoute: MotosikletlerIlanVerRoute,
   ParcaAksesuarSlugRoute: ParcaAksesuarSlugRoute,

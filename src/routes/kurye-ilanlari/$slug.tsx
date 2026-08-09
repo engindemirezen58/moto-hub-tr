@@ -71,7 +71,7 @@ function JobDetailPage() {
     setSending(true);
     const { error } = await supabase.from("courier_applications").insert({
       job_id: job.id,
-      applicant_id: user.id,
+      user_id: user.id,
       message: parsed.data.message,
       experience: parsed.data.experience || null,
       license_class: parsed.data.licenseClass || null,
