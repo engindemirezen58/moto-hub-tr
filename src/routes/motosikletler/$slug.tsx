@@ -104,7 +104,7 @@ function MotorcycleDetailPage() {
     }
     const parsed = messageSchema.safeParse({ content: message });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0].message);
+      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
       return;
     }
     const { error } = await supabase.from("messages").insert({
@@ -129,7 +129,7 @@ function MotorcycleDetailPage() {
     }
     const parsed = reportSchema.safeParse({ reason: reportReason, details: reportDetails });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0].message);
+      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
       return;
     }
     const { error } = await supabase.from("reports").insert({

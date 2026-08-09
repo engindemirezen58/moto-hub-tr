@@ -101,7 +101,7 @@ function CreateMotorcycleListingPage() {
       photos,
     });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0].message);
+      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
       return;
     }
     const v = parsed.data;
