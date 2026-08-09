@@ -39,7 +39,7 @@ function ServicesPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["shops", city, type, q],
     queryFn: async () => {
-      let query = supabase.from("repair_shops").select("*").eq("is_approved", true);
+      let query = supabase.from("repair_shops").select("*");
       if (city !== "hepsi") query = query.eq("city", city);
       if (type !== "hepsi") query = query.contains("service_types", [type]);
       if (q) query = query.ilike("name", `%${q}%`);
