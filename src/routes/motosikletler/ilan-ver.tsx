@@ -270,6 +270,55 @@ function CreateMotorcycleListingPage() {
           </div>
 
           <div className="space-y-2">
+            <Label>Motor Gücü (hp) *</Label>
+            <Select value={form.powerRange} onValueChange={(v) => set({ powerRange: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Güç aralığı seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {POWER_RANGES.map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Zamanlama Tipi</Label>
+            <Select value={form.timingType} onValueChange={(v) => set({ timingType: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIMING_TYPES.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {t}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Soğutma Tipi</Label>
+            <Select value={form.coolingType} onValueChange={(v) => set({ coolingType: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {COOLING_TYPES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+
+          <div className="space-y-2">
             <Label>Vites Tipi *</Label>
             <Select value={form.transmission} onValueChange={(v) => set({ transmission: v })}>
               <SelectTrigger>
