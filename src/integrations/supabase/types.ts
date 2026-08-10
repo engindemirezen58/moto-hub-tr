@@ -199,6 +199,41 @@ export type Database = {
         }
         Relationships: []
       }
+      listing_private_details: {
+        Row: {
+          created_at: string
+          id: string
+          listing_id: string
+          plate_number: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          listing_id: string
+          plate_number?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          listing_id?: string
+          plate_number?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_private_details_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "motorcycle_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -237,6 +272,8 @@ export type Database = {
           brand: string
           city: string
           color: string | null
+          contact_preference: string
+          cooling_type: string | null
           created_at: string
           description: string | null
           district: string | null
@@ -244,16 +281,21 @@ export type Database = {
           engine_type: string | null
           fuel_type: string
           has_damage_record: boolean
+          has_heavy_damage: boolean
           id: string
           is_featured: boolean
           is_new: boolean
           mileage: number
           model: string
+          negotiable: boolean
           photos: string[]
+          plate_origin: string | null
+          power_range: string | null
           price: number
           seller_type: Database["public"]["Enums"]["seller_type"]
           slug: string
           status: Database["public"]["Enums"]["listing_status"]
+          timing_type: string | null
           title: string
           trade_possible: boolean
           transmission: Database["public"]["Enums"]["transmission_type"]
@@ -266,6 +308,8 @@ export type Database = {
           brand: string
           city: string
           color?: string | null
+          contact_preference?: string
+          cooling_type?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
@@ -273,16 +317,21 @@ export type Database = {
           engine_type?: string | null
           fuel_type?: string
           has_damage_record?: boolean
+          has_heavy_damage?: boolean
           id?: string
           is_featured?: boolean
           is_new?: boolean
           mileage?: number
           model: string
+          negotiable?: boolean
           photos?: string[]
+          plate_origin?: string | null
+          power_range?: string | null
           price: number
           seller_type?: Database["public"]["Enums"]["seller_type"]
           slug: string
           status?: Database["public"]["Enums"]["listing_status"]
+          timing_type?: string | null
           title: string
           trade_possible?: boolean
           transmission?: Database["public"]["Enums"]["transmission_type"]
@@ -295,6 +344,8 @@ export type Database = {
           brand?: string
           city?: string
           color?: string | null
+          contact_preference?: string
+          cooling_type?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
@@ -302,16 +353,21 @@ export type Database = {
           engine_type?: string | null
           fuel_type?: string
           has_damage_record?: boolean
+          has_heavy_damage?: boolean
           id?: string
           is_featured?: boolean
           is_new?: boolean
           mileage?: number
           model?: string
+          negotiable?: boolean
           photos?: string[]
+          plate_origin?: string | null
+          power_range?: string | null
           price?: number
           seller_type?: Database["public"]["Enums"]["seller_type"]
           slug?: string
           status?: Database["public"]["Enums"]["listing_status"]
+          timing_type?: string | null
           title?: string
           trade_possible?: boolean
           transmission?: Database["public"]["Enums"]["transmission_type"]

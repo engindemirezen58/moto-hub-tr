@@ -21,10 +21,16 @@ import { uniqueSlug } from "@/lib/format";
 import { motorcycleListingSchema } from "@/lib/schemas";
 import {
   CITIES,
+  COOLING_TYPES,
+  CONTACT_PREFERENCES,
   ENGINE_TYPES,
   FUEL_TYPES,
   MOTO_BRANDS,
+  MOTO_COLORS,
+  PLATE_ORIGINS,
+  POWER_RANGES,
   SELLER_TYPES,
+  TIMING_TYPES,
   TRANSMISSIONS,
 } from "@/lib/constants";
 
@@ -44,6 +50,31 @@ export const Route = createFileRoute("/motosikletler/ilan-ver")({
   component: CreateMotorcycleListingPage,
 });
 
+function YesNo({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <div className="inline-flex overflow-hidden rounded-md border border-input">
+      {[
+        { label: "Evet", v: true },
+        { label: "Hayır", v: false },
+      ].map((opt) => (
+        <button
+          key={opt.label}
+          type="button"
+          aria-pressed={value === opt.v}
+          onClick={() => onChange(opt.v)}
+          className={`px-5 py-2 text-sm font-medium transition ${
+            value === opt.v
+              ? "bg-primary text-primary-foreground"
+              : "bg-background text-muted-foreground hover:bg-muted"
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function CreateMotorcycleListingPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -56,6 +87,9 @@ function CreateMotorcycleListingPage() {
     isNew: false,
     mileage: "0",
     engineCc: "",
+    powerRange: "",
+    timingType: "",
+    coolingType: "",
     engineType: "",
     transmission: "manuel",
     fuelType: "Benzin",
@@ -63,6 +97,11 @@ function CreateMotorcycleListingPage() {
     price: "",
     tradePossible: false,
     hasDamageRecord: false,
+    hasHeavyDamage: false,
+    plateOrigin: "tr",
+    plateNumber: "",
+    negotiable: true,
+    contactPreference: "uygulama",
     sellerType: "sahibinden",
     description: "",
     city: "",
@@ -107,34 +146,55 @@ function CreateMotorcycleListingPage() {
     const v = parsed.data;
     setSaving(true);
     const title = `${v.brand} ${v.model} ${v.year}${v.color ? " " + v.color : ""}`;
-    const { error } = await supabase.from("motorcycle_listings").insert({
-      user_id: user!.id,
-      slug: uniqueSlug(title),
-      title,
-      brand: v.brand,
-      model: v.model,
-      year: v.year,
-      mileage: v.mileage,
-      engine_cc: v.engineCc,
-      engine_type: v.engineType || null,
-      transmission: v.transmission,
-      fuel_type: v.fuelType,
-      color: v.color || null,
-      price: v.price,
-      is_new: v.isNew,
-      trade_possible: v.tradePossible,
-      has_damage_record: v.hasDamageRecord,
-      seller_type: v.sellerType,
-      description: v.description || null,
-      city: v.city,
-      district: v.district || null,
-      photos: v.photos,
-    });
-    setSaving(false);
-    if (error) {
+    const { data: created, error } = await supabase
+      .from("motorcycle_listings")
+      .insert({
+        user_id: user!.id,
+        slug: uniqueSlug(title),
+        title,
+        brand: v.brand,
+        model: v.model,
+        year: v.year,
+        mileage: v.mileage,
+        engine_cc: v.engineCc,
+        engine_type: v.engineType || null,
+        power_range: v.powerRange,
+        timing_type: v.timingType || null,
+        cooling_type: v.coolingType || null,
+        transmission: v.transmission,
+        fuel_type: v.fuelType,
+        color: v.color,
+        price: v.price,
+        is_new: v.isNew,
+        trade_possible: v.tradePossible,
+        has_damage_record: v.hasDamageRecord,
+        has_heavy_damage: v.hasHeavyDamage,
+        plate_origin: v.plateOrigin,
+        negotiable: v.negotiable,
+        contact_preference: v.contactPreference,
+        seller_type: v.sellerType,
+        description: v.description || null,
+        city: v.city,
+        district: v.district || null,
+        photos: v.photos,
+      })
+      .select("id")
+      .single();
+
+    if (error || !created) {
+      setSaving(false);
       toast.error("İlan kaydedilemedi. Lütfen tekrar deneyin.");
       return;
     }
+
+    // Plaka gizli tutulur; ilan sayfasında hiç kimseye gösterilmez.
+    await supabase.from("listing_private_details").insert({
+      listing_id: created.id,
+      user_id: user!.id,
+      plate_number: v.plateNumber.toUpperCase(),
+    });
+
+    setSaving(false);
     toast.success("İlanınız yayına alındı.");
     void navigate({ to: "/hesabim" });
   };
@@ -235,6 +295,55 @@ function CreateMotorcycleListingPage() {
           </div>
 
           <div className="space-y-2">
+            <Label>Motor Gücü (hp) *</Label>
+            <Select value={form.powerRange} onValueChange={(v) => set({ powerRange: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Güç aralığı seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {POWER_RANGES.map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Zamanlama Tipi</Label>
+            <Select value={form.timingType} onValueChange={(v) => set({ timingType: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIMING_TYPES.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {t}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Soğutma Tipi</Label>
+            <Select value={form.coolingType} onValueChange={(v) => set({ coolingType: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {COOLING_TYPES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+
+          <div className="space-y-2">
             <Label>Vites Tipi *</Label>
             <Select value={form.transmission} onValueChange={(v) => set({ transmission: v })}>
               <SelectTrigger>
@@ -267,13 +376,30 @@ function CreateMotorcycleListingPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Renk</Label>
-            <Input
-              value={form.color}
-              onChange={(e) => set({ color: e.target.value })}
-              maxLength={40}
-            />
+            <Label>Renk *</Label>
+            <div className="flex flex-wrap gap-2">
+              {MOTO_COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  title={c.value}
+                  aria-label={c.value}
+                  aria-pressed={form.color === c.value}
+                  onClick={() => set({ color: c.value })}
+                  className={`size-8 rounded-full border-2 transition ${
+                    form.color === c.value
+                      ? "border-primary ring-2 ring-primary/40"
+                      : "border-border"
+                  }`}
+                  style={{ backgroundColor: c.hex }}
+                />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {form.color ? `Seçilen: ${form.color}` : "Bir renk seçin"}
+            </p>
           </div>
+
 
           <div className="space-y-2">
             <Label>Fiyat (₺) *</Label>
@@ -301,6 +427,43 @@ function CreateMotorcycleListingPage() {
             </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label>Plaka / Uyruk *</Label>
+            <Select value={form.plateOrigin} onValueChange={(v) => set({ plateOrigin: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {PLATE_ORIGINS.map((p) => (
+                  <SelectItem key={p.value} value={p.value}>
+                    {p.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Araç Plakası *</Label>
+            <Input
+              value={form.plateNumber}
+              onChange={(e) => set({ plateNumber: e.target.value.toUpperCase() })}
+              placeholder="34 ABC 123"
+              maxLength={15}
+            />
+            <p className="text-xs text-muted-foreground">
+              Plaka ilanda gösterilmez; yalnızca doğrulama için saklanır.
+            </p>
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Ağır Hasar Kaydı *</Label>
+            <YesNo
+              value={form.hasHeavyDamage}
+              onChange={(v) => set({ hasHeavyDamage: v, hasDamageRecord: v || form.hasDamageRecord })}
+            />
+          </div>
+
           <div className="flex items-end gap-4 sm:col-span-2">
             <label className="flex items-center gap-2 text-sm">
               <Checkbox
@@ -318,6 +481,41 @@ function CreateMotorcycleListingPage() {
             </label>
           </div>
         </section>
+
+        <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-card sm:grid-cols-2">
+          <h2 className="font-display text-lg font-bold sm:col-span-2">İletişim Tercihleri</h2>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Pazarlık / Takas teklifi alınsın mı? *</Label>
+            <YesNo value={form.negotiable} onChange={(v) => set({ negotiable: v })} />
+            <p className="text-xs text-muted-foreground">
+              Kapatırsanız ilan sayfasındaki “Pazarlık / Takas Teklifi” butonu görünmez.
+            </p>
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Alıcılar size nasıl ulaşsın? *</Label>
+            <Select
+              value={form.contactPreference}
+              onValueChange={(v) => set({ contactPreference: v })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CONTACT_PREFERENCES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Telefon seçeneğinde profilinizdeki numara ilanda gösterilir.
+            </p>
+          </div>
+        </section>
+
 
         <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-card sm:grid-cols-2">
           <h2 className="font-display text-lg font-bold sm:col-span-2">Konum ve Açıklama</h2>

@@ -31,19 +31,33 @@ export const motorcycleListingSchema = z.object({
   isNew: z.boolean().default(false),
   mileage: z.coerce.number().int().min(0, "Kilometre 0'dan küçük olamaz").max(1_000_000),
   engineCc: z.coerce.number().int().min(0).max(3000),
+  powerRange: z.string().trim().min(1, "Motor gücü aralığı seçin").max(40),
+  timingType: z.string().trim().max(40).optional().or(z.literal("")),
+  coolingType: z.string().trim().max(40).optional().or(z.literal("")),
   engineType: z.string().trim().max(60).optional().or(z.literal("")),
   transmission: z.enum(["manuel", "otomatik", "yari_otomatik"]),
   fuelType: z.string().trim().min(1).max(30),
-  color: z.string().trim().max(40).optional().or(z.literal("")),
+  color: z.string().trim().min(1, "Renk seçin").max(40),
   price: z.coerce.number().min(1, "Fiyat girin").max(100_000_000),
   tradePossible: z.boolean().default(false),
   hasDamageRecord: z.boolean().default(false),
+  hasHeavyDamage: z.boolean().default(false),
+  plateOrigin: z.string().trim().min(1, "Plaka/uyruk seçin").max(30),
+  plateNumber: z
+    .string()
+    .trim()
+    .min(5, "Araç plakasını girin")
+    .max(15, "Plaka en fazla 15 karakter")
+    .regex(/^[A-Z0-9ÇĞİÖŞÜ\s-]+$/i, "Geçerli bir plaka girin"),
+  negotiable: z.boolean().default(true),
+  contactPreference: z.enum(["uygulama", "uygulama_telefon"]).default("uygulama"),
   sellerType: z.enum(["sahibinden", "galeriden", "yetkili_bayi"]),
   description: z.string().trim().max(4000).optional().or(z.literal("")),
   city: z.string().trim().min(1, "İl seçin"),
   district: z.string().trim().max(60).optional().or(z.literal("")),
   photos: z.array(z.string().min(1)).min(1, "En az 1 fotoğraf ekleyin").max(15, "En fazla 15 fotoğraf"),
 });
+
 
 export const partListingSchema = z.object({
   title: z.string().trim().min(5, "Başlık en az 5 karakter").max(120),

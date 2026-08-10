@@ -53,7 +53,7 @@ export const Route = createFileRoute("/parca-aksesuar/")({
 
 function PartsListPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/parca-aksesuar" });
+  const navigate = useNavigate({ from: "/parca-aksesuar/" });
   const setFilter = (patch: Partial<PartSearch>) => {
     void navigate({ search: (prev: PartSearch) => ({ ...prev, ...patch }) });
   };

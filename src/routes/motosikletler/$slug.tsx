@@ -2,7 +2,18 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Calendar, Eye, Flag, Gauge, MapPin, MessageSquare, Repeat, ShieldAlert } from "lucide-react";
+import {
+  Calendar,
+  Eye,
+  Flag,
+  Gauge,
+  Handshake,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Repeat,
+  ShieldAlert,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +32,7 @@ import { MotorcycleCard, type MotoCardData } from "@/components/listing/Motorcyc
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { formatNumber, formatPrice, formatDate } from "@/lib/format";
-import { SELLER_TYPES, TRANSMISSIONS } from "@/lib/constants";
+import { PLATE_ORIGINS, SELLER_TYPES, TRANSMISSIONS } from "@/lib/constants";
 import { messageSchema, reportSchema } from "@/lib/schemas";
 
 export const Route = createFileRoute("/motosikletler/$slug")({
@@ -88,39 +99,70 @@ function MotorcycleDetailPage() {
     },
   });
 
+  const { data: sellerPhone } = useQuery({
+    queryKey: ["seller-phone", listing?.user_id],
+    enabled: !!listing?.user_id && listing?.contact_preference === "uygulama_telefon",
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("phone")
+        .eq("id", listing!.user_id!)
+        .maybeSingle();
+      if (error) throw error;
+      return data?.phone ?? null;
+    },
+  });
+
   if (isLoading) {
     return <div className="mx-auto max-w-7xl px-4 py-16 text-sm text-muted-foreground">Yükleniyor...</div>;
   }
   if (!listing) return null;
 
-  const sendMessage = async () => {
+  const postMessage = async (content: string) => {
     if (!user) {
       toast.error("Mesaj göndermek için giriş yapmalısınız.");
-      return;
+      return false;
     }
     if (!listing.user_id) {
       toast.error("Bu ilan için mesajlaşma kapalı.");
-      return;
-    }
-    const parsed = messageSchema.safeParse({ content: message });
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
-      return;
+      return false;
     }
     const { error } = await supabase.from("messages").insert({
       sender_id: user.id,
       receiver_id: listing.user_id,
       listing_id: listing.id,
       listing_type: "motorcycle",
-      content: parsed.data.content,
+      content,
     });
     if (error) {
       toast.error("Mesaj gönderilemedi.");
+      return false;
+    }
+    return true;
+  };
+
+  const sendMessage = async () => {
+    const parsed = messageSchema.safeParse({ content: message });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
       return;
     }
-    setMessage("");
-    toast.success("Mesajınız satıcıya iletildi.");
+    if (await postMessage(parsed.data.content)) {
+      setMessage("");
+      toast.success("Mesajınız satıcıya iletildi.");
+    }
   };
+
+  const sendOffer = async () => {
+    const text = message.trim()
+      ? `Pazarlık / Takas teklifi: ${message.trim()}`
+      : "Pazarlık / Takas teklifi: Bu ilan için pazarlık veya takas görüşmek istiyorum.";
+    if (await postMessage(text.slice(0, 2000))) {
+      setMessage("");
+      toast.success("Pazarlık/takas teklifiniz satıcıya iletildi.");
+    }
+  };
+
 
   const sendReport = async () => {
     if (!user) {
@@ -153,16 +195,25 @@ function MotorcycleDetailPage() {
     ["Yıl", String(listing.year)],
     ["Kilometre", listing.is_new ? "Sıfır" : `${formatNumber(listing.mileage)} km`],
     ["Motor Hacmi", `${listing.engine_cc} cc`],
+    ["Motor Gücü", listing.power_range ?? "Belirtilmemiş"],
     ["Motor Tipi", listing.engine_type ?? "Belirtilmemiş"],
+    ["Zamanlama Tipi", listing.timing_type ?? "Belirtilmemiş"],
+    ["Soğutma Tipi", listing.cooling_type ?? "Belirtilmemiş"],
     ["Vites", TRANSMISSIONS.find((t) => t.value === listing.transmission)?.label ?? "-"],
     ["Yakıt", listing.fuel_type],
     ["Renk", listing.color ?? "Belirtilmemiş"],
+    [
+      "Plaka / Uyruk",
+      PLATE_ORIGINS.find((p) => p.value === listing.plate_origin)?.label ?? "Belirtilmemiş",
+    ],
     ["Takas", listing.trade_possible ? "Takasa açık" : "Takas yok"],
     ["Hasar Kaydı", listing.has_damage_record ? "Var" : "Yok"],
+    ["Ağır Hasar Kaydı", listing.has_heavy_damage ? "Var" : "Yok"],
     ["Kimden", SELLER_TYPES.find((s) => s.value === listing.seller_type)?.label ?? "-"],
     ["Konum", `${listing.city}${listing.district ? " / " + listing.district : ""}`],
     ["İlan Tarihi", formatDate(listing.created_at)],
   ];
+
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -288,6 +339,31 @@ function MotorcycleDetailPage() {
               <Button className="mt-3 w-full" onClick={() => void sendMessage()}>
                 Mesaj Gönder
               </Button>
+
+              {listing.negotiable && (
+                <Button
+                  variant="outline"
+                  className="mt-2 w-full gap-2"
+                  onClick={() => void sendOffer()}
+                >
+                  <Handshake className="size-4" /> Pazarlık / Takas Teklifi
+                </Button>
+              )}
+
+              {listing.contact_preference === "uygulama_telefon" && sellerPhone && (
+                <a
+                  href={`tel:${sellerPhone.replace(/\s/g, "")}`}
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-md border border-border py-2 text-sm font-medium hover:bg-muted"
+                >
+                  <Phone className="size-4" /> {sellerPhone}
+                </a>
+              )}
+              {listing.contact_preference !== "uygulama_telefon" && (
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Satıcı yalnızca uygulama üzerinden mesaj almayı tercih ediyor.
+                </p>
+              )}
+
               {!user && (
                 <p className="mt-2 text-center text-xs text-muted-foreground">
                   <Link to="/giris" className="underline">
@@ -300,6 +376,7 @@ function MotorcycleDetailPage() {
                 </p>
               )}
             </div>
+
 
             <Dialog>
               <DialogTrigger asChild>
