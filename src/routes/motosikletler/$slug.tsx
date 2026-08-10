@@ -21,7 +21,7 @@ import { MotorcycleCard, type MotoCardData } from "@/components/listing/Motorcyc
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { formatNumber, formatPrice, formatDate } from "@/lib/format";
-import { SELLER_TYPES, TRANSMISSIONS } from "@/lib/constants";
+import { PLATE_ORIGINS, SELLER_TYPES, TRANSMISSIONS } from "@/lib/constants";
 import { messageSchema, reportSchema } from "@/lib/schemas";
 
 export const Route = createFileRoute("/motosikletler/$slug")({
