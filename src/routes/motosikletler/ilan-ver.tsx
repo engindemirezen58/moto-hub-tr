@@ -21,10 +21,16 @@ import { uniqueSlug } from "@/lib/format";
 import { motorcycleListingSchema } from "@/lib/schemas";
 import {
   CITIES,
+  COOLING_TYPES,
+  CONTACT_PREFERENCES,
   ENGINE_TYPES,
   FUEL_TYPES,
   MOTO_BRANDS,
+  MOTO_COLORS,
+  PLATE_ORIGINS,
+  POWER_RANGES,
   SELLER_TYPES,
+  TIMING_TYPES,
   TRANSMISSIONS,
 } from "@/lib/constants";
 
