@@ -2,7 +2,18 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Calendar, Eye, Flag, Gauge, MapPin, MessageSquare, Repeat, ShieldAlert } from "lucide-react";
+import {
+  Calendar,
+  Eye,
+  Flag,
+  Gauge,
+  Handshake,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Repeat,
+  ShieldAlert,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
