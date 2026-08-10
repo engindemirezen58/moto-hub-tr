@@ -121,34 +121,55 @@ function CreateMotorcycleListingPage() {
     const v = parsed.data;
     setSaving(true);
     const title = `${v.brand} ${v.model} ${v.year}${v.color ? " " + v.color : ""}`;
-    const { error } = await supabase.from("motorcycle_listings").insert({
-      user_id: user!.id,
-      slug: uniqueSlug(title),
-      title,
-      brand: v.brand,
-      model: v.model,
-      year: v.year,
-      mileage: v.mileage,
-      engine_cc: v.engineCc,
-      engine_type: v.engineType || null,
-      transmission: v.transmission,
-      fuel_type: v.fuelType,
-      color: v.color || null,
-      price: v.price,
-      is_new: v.isNew,
-      trade_possible: v.tradePossible,
-      has_damage_record: v.hasDamageRecord,
-      seller_type: v.sellerType,
-      description: v.description || null,
-      city: v.city,
-      district: v.district || null,
-      photos: v.photos,
-    });
-    setSaving(false);
-    if (error) {
+    const { data: created, error } = await supabase
+      .from("motorcycle_listings")
+      .insert({
+        user_id: user!.id,
+        slug: uniqueSlug(title),
+        title,
+        brand: v.brand,
+        model: v.model,
+        year: v.year,
+        mileage: v.mileage,
+        engine_cc: v.engineCc,
+        engine_type: v.engineType || null,
+        power_range: v.powerRange,
+        timing_type: v.timingType || null,
+        cooling_type: v.coolingType || null,
+        transmission: v.transmission,
+        fuel_type: v.fuelType,
+        color: v.color,
+        price: v.price,
+        is_new: v.isNew,
+        trade_possible: v.tradePossible,
+        has_damage_record: v.hasDamageRecord,
+        has_heavy_damage: v.hasHeavyDamage,
+        plate_origin: v.plateOrigin,
+        negotiable: v.negotiable,
+        contact_preference: v.contactPreference,
+        seller_type: v.sellerType,
+        description: v.description || null,
+        city: v.city,
+        district: v.district || null,
+        photos: v.photos,
+      })
+      .select("id")
+      .single();
+
+    if (error || !created) {
+      setSaving(false);
       toast.error("İlan kaydedilemedi. Lütfen tekrar deneyin.");
       return;
     }
+
+    // Plaka gizli tutulur; ilan sayfasında hiç kimseye gösterilmez.
+    await supabase.from("listing_private_details").insert({
+      listing_id: created.id,
+      user_id: user!.id,
+      plate_number: v.plateNumber.toUpperCase(),
+    });
+
+    setSaving(false);
     toast.success("İlanınız yayına alındı.");
     void navigate({ to: "/hesabim" });
   };
