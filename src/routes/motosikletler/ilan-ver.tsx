@@ -302,13 +302,30 @@ function CreateMotorcycleListingPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Renk</Label>
-            <Input
-              value={form.color}
-              onChange={(e) => set({ color: e.target.value })}
-              maxLength={40}
-            />
+            <Label>Renk *</Label>
+            <div className="flex flex-wrap gap-2">
+              {MOTO_COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  title={c.value}
+                  aria-label={c.value}
+                  aria-pressed={form.color === c.value}
+                  onClick={() => set({ color: c.value })}
+                  className={`size-8 rounded-full border-2 transition ${
+                    form.color === c.value
+                      ? "border-primary ring-2 ring-primary/40"
+                      : "border-border"
+                  }`}
+                  style={{ backgroundColor: c.hex }}
+                />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {form.color ? `Seçilen: ${form.color}` : "Bir renk seçin"}
+            </p>
           </div>
+
 
           <div className="space-y-2">
             <Label>Fiyat (₺) *</Label>
