@@ -297,6 +297,31 @@ function MotorcycleDetailPage() {
               <Button className="mt-3 w-full" onClick={() => void sendMessage()}>
                 Mesaj Gönder
               </Button>
+
+              {listing.negotiable && (
+                <Button
+                  variant="outline"
+                  className="mt-2 w-full gap-2"
+                  onClick={() => void sendOffer()}
+                >
+                  <Handshake className="size-4" /> Pazarlık / Takas Teklifi
+                </Button>
+              )}
+
+              {listing.contact_preference === "uygulama_telefon" && sellerPhone && (
+                <a
+                  href={`tel:${sellerPhone.replace(/\s/g, "")}`}
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-md border border-border py-2 text-sm font-medium hover:bg-muted"
+                >
+                  <Phone className="size-4" /> {sellerPhone}
+                </a>
+              )}
+              {listing.contact_preference !== "uygulama_telefon" && (
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Satıcı yalnızca uygulama üzerinden mesaj almayı tercih ediyor.
+                </p>
+              )}
+
               {!user && (
                 <p className="mt-2 text-center text-xs text-muted-foreground">
                   <Link to="/giris" className="underline">
@@ -309,6 +334,7 @@ function MotorcycleDetailPage() {
                 </p>
               )}
             </div>
+
 
             <Dialog>
               <DialogTrigger asChild>
