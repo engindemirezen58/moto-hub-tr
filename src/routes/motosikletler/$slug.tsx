@@ -153,16 +153,25 @@ function MotorcycleDetailPage() {
     ["Yıl", String(listing.year)],
     ["Kilometre", listing.is_new ? "Sıfır" : `${formatNumber(listing.mileage)} km`],
     ["Motor Hacmi", `${listing.engine_cc} cc`],
+    ["Motor Gücü", listing.power_range ?? "Belirtilmemiş"],
     ["Motor Tipi", listing.engine_type ?? "Belirtilmemiş"],
+    ["Zamanlama Tipi", listing.timing_type ?? "Belirtilmemiş"],
+    ["Soğutma Tipi", listing.cooling_type ?? "Belirtilmemiş"],
     ["Vites", TRANSMISSIONS.find((t) => t.value === listing.transmission)?.label ?? "-"],
     ["Yakıt", listing.fuel_type],
     ["Renk", listing.color ?? "Belirtilmemiş"],
+    [
+      "Plaka / Uyruk",
+      PLATE_ORIGINS.find((p) => p.value === listing.plate_origin)?.label ?? "Belirtilmemiş",
+    ],
     ["Takas", listing.trade_possible ? "Takasa açık" : "Takas yok"],
     ["Hasar Kaydı", listing.has_damage_record ? "Var" : "Yok"],
+    ["Ağır Hasar Kaydı", listing.has_heavy_damage ? "Var" : "Yok"],
     ["Kimden", SELLER_TYPES.find((s) => s.value === listing.seller_type)?.label ?? "-"],
     ["Konum", `${listing.city}${listing.district ? " / " + listing.district : ""}`],
     ["İlan Tarihi", formatDate(listing.created_at)],
   ];
+
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
