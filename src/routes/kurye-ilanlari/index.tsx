@@ -48,7 +48,7 @@ export const Route = createFileRoute("/kurye-ilanlari/")({
 
 function JobsListPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/kurye-ilanlari" });
+  const navigate = useNavigate({ from: "/kurye-ilanlari/" });
   const setFilter = (patch: Partial<JobSearch>) => {
     void navigate({ search: (prev: JobSearch) => ({ ...prev, ...patch }) });
   };
