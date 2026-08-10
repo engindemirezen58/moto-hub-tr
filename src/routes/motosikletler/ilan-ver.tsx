@@ -50,6 +50,31 @@ export const Route = createFileRoute("/motosikletler/ilan-ver")({
   component: CreateMotorcycleListingPage,
 });
 
+function YesNo({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <div className="inline-flex overflow-hidden rounded-md border border-input">
+      {[
+        { label: "Evet", v: true },
+        { label: "Hayır", v: false },
+      ].map((opt) => (
+        <button
+          key={opt.label}
+          type="button"
+          aria-pressed={value === opt.v}
+          onClick={() => onChange(opt.v)}
+          className={`px-5 py-2 text-sm font-medium transition ${
+            value === opt.v
+              ? "bg-primary text-primary-foreground"
+              : "bg-background text-muted-foreground hover:bg-muted"
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function CreateMotorcycleListingPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
