@@ -99,39 +99,70 @@ function MotorcycleDetailPage() {
     },
   });
 
+  const { data: sellerPhone } = useQuery({
+    queryKey: ["seller-phone", listing?.user_id],
+    enabled: !!listing?.user_id && listing?.contact_preference === "uygulama_telefon",
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("phone")
+        .eq("id", listing!.user_id!)
+        .maybeSingle();
+      if (error) throw error;
+      return data?.phone ?? null;
+    },
+  });
+
   if (isLoading) {
     return <div className="mx-auto max-w-7xl px-4 py-16 text-sm text-muted-foreground">Yükleniyor...</div>;
   }
   if (!listing) return null;
 
-  const sendMessage = async () => {
+  const postMessage = async (content: string) => {
     if (!user) {
       toast.error("Mesaj göndermek için giriş yapmalısınız.");
-      return;
+      return false;
     }
     if (!listing.user_id) {
       toast.error("Bu ilan için mesajlaşma kapalı.");
-      return;
-    }
-    const parsed = messageSchema.safeParse({ content: message });
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
-      return;
+      return false;
     }
     const { error } = await supabase.from("messages").insert({
       sender_id: user.id,
       receiver_id: listing.user_id,
       listing_id: listing.id,
       listing_type: "motorcycle",
-      content: parsed.data.content,
+      content,
     });
     if (error) {
       toast.error("Mesaj gönderilemedi.");
+      return false;
+    }
+    return true;
+  };
+
+  const sendMessage = async () => {
+    const parsed = messageSchema.safeParse({ content: message });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Geçersiz veri");
       return;
     }
-    setMessage("");
-    toast.success("Mesajınız satıcıya iletildi.");
+    if (await postMessage(parsed.data.content)) {
+      setMessage("");
+      toast.success("Mesajınız satıcıya iletildi.");
+    }
   };
+
+  const sendOffer = async () => {
+    const text = message.trim()
+      ? `Pazarlık / Takas teklifi: ${message.trim()}`
+      : "Pazarlık / Takas teklifi: Bu ilan için pazarlık veya takas görüşmek istiyorum.";
+    if (await postMessage(text.slice(0, 2000))) {
+      setMessage("");
+      toast.success("Pazarlık/takas teklifiniz satıcıya iletildi.");
+    }
+  };
+
 
   const sendReport = async () => {
     if (!user) {
