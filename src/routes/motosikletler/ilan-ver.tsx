@@ -336,6 +336,43 @@ function CreateMotorcycleListingPage() {
             </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label>Plaka / Uyruk *</Label>
+            <Select value={form.plateOrigin} onValueChange={(v) => set({ plateOrigin: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {PLATE_ORIGINS.map((p) => (
+                  <SelectItem key={p.value} value={p.value}>
+                    {p.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Araç Plakası *</Label>
+            <Input
+              value={form.plateNumber}
+              onChange={(e) => set({ plateNumber: e.target.value.toUpperCase() })}
+              placeholder="34 ABC 123"
+              maxLength={15}
+            />
+            <p className="text-xs text-muted-foreground">
+              Plaka ilanda gösterilmez; yalnızca doğrulama için saklanır.
+            </p>
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Ağır Hasar Kaydı *</Label>
+            <YesNo
+              value={form.hasHeavyDamage}
+              onChange={(v) => set({ hasHeavyDamage: v, hasDamageRecord: v || form.hasDamageRecord })}
+            />
+          </div>
+
           <div className="flex items-end gap-4 sm:col-span-2">
             <label className="flex items-center gap-2 text-sm">
               <Checkbox
@@ -353,6 +390,41 @@ function CreateMotorcycleListingPage() {
             </label>
           </div>
         </section>
+
+        <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-card sm:grid-cols-2">
+          <h2 className="font-display text-lg font-bold sm:col-span-2">İletişim Tercihleri</h2>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Pazarlık / Takas teklifi alınsın mı? *</Label>
+            <YesNo value={form.negotiable} onChange={(v) => set({ negotiable: v })} />
+            <p className="text-xs text-muted-foreground">
+              Kapatırsanız ilan sayfasındaki “Pazarlık / Takas Teklifi” butonu görünmez.
+            </p>
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Alıcılar size nasıl ulaşsın? *</Label>
+            <Select
+              value={form.contactPreference}
+              onValueChange={(v) => set({ contactPreference: v })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CONTACT_PREFERENCES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Telefon seçeneğinde profilinizdeki numara ilanda gösterilir.
+            </p>
+          </div>
+        </section>
+
 
         <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-card sm:grid-cols-2">
           <h2 className="font-display text-lg font-bold sm:col-span-2">Konum ve Açıklama</h2>
